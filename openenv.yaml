@@ -1,0 +1,81 @@
+spec_version: 1
+name: data_pipeline_env
+type: environment
+description: >
+  Data Pipeline Debugging Environment — AI agents diagnose and fix real-world
+  data pipeline issues including type mismatches, schema drift, orphan records,
+  and data quality problems across multiple tables.
+
+runtime:
+  language: python
+  version: "3.11"
+
+app:
+  module: server.app:app
+  port: 8000
+
+tasks:
+  - name: type_mismatch_fix
+    difficulty: easy
+    description: >
+      Fix a single table with type mismatch and invalid value bugs.
+      2 bugs to find and fix.
+    max_steps: 10
+    grader: reward_based
+    score_range: [0.0, 1.0]
+
+  - name: schema_drift_repair
+    difficulty: medium
+    description: >
+      Repair a two-table join pipeline with renamed columns, type mismatches,
+      and orphan records. 3 bugs to find and fix.
+    max_steps: 15
+    grader: reward_based
+    score_range: [0.0, 1.0]
+
+  - name: etl_pipeline_overhaul
+    difficulty: hard
+    description: >
+      Overhaul a multi-table ETL pipeline with 5 interacting bugs including
+      column renames, type casts, negative values, zero-quantity records,
+      and orphan foreign keys.
+    max_steps: 20
+    grader: reward_based
+    score_range: [0.0, 1.0]
+
+action_space:
+  type: PipelineAction
+  fields:
+    command:
+      type: string
+      enum: [inspect_schema, inspect_data, run_query, diagnose, fix, validate]
+      description: The debugging command to execute
+    target:
+      type: string
+      description: Table name, query, diagnosis text, or fix description
+    parameters:
+      type: object
+      description: Optional parameters (e.g., limit for inspect_data)
+
+observation_space:
+  type: PipelineObservation
+  fields:
+    output:
+      type: string
+      description: Text output from the executed command
+    pipeline_status:
+      type: string
+      enum: [broken, partially_fixed, fixed]
+    bugs_found:
+      type: integer
+    bugs_fixed:
+      type: integer
+    total_bugs:
+      type: integer
+    available_tables:
+      type: array
+      items: string
+    hint:
+      type: string
+    error_message:
+      type: string

@@ -1,0 +1,86 @@
+# ============================================================
+#  EXACT COMMANDS FOR YOUR SETUP (PowerShell / VS Code Terminal)
+#  
+#  GitHub:  suraj7880314386/Assigmnent  (already pushed, needs fix)
+#  HF Space: jdwnx234/Round1            (created, needs files)
+#
+#  DOWNLOAD the "fixed_project" folder from Claude first,
+#  then follow these steps.
+# ============================================================
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  STEP 1: FIX GITHUB REPO
+#  (Your current push has wrong structure - 
+#   files are flat, needs server/ subfolder)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Navigate to the DOWNLOADED fixed_project folder
+cd C:\Users\suraj\Downloads\fixed_project
+
+# Init and push (force to overwrite the broken push)
+git init
+git add -A
+git commit -m "Fix: correct project structure with server/ folder"
+git branch -M main
+git remote add origin https://github.com/suraj7880314386/Assigmnent.git
+git push -u origin main --force
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  STEP 2: DEPLOY TO HF SPACE (jdwnx234/Round1)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# 2a. Install HF CLI
+pip install huggingface_hub[cli]
+
+# 2b. Login (paste your HF access token when prompted)
+#     Get token from: https://huggingface.co/settings/tokens
+huggingface-cli login
+
+# 2c. Clone your empty Space
+cd C:\Users\suraj\Downloads
+git clone https://huggingface.co/spaces/jdwnx234/Round1
+
+# 2d. Copy ALL files from fixed_project into the cloned Space
+#     (When prompted for password, use your HF access token)
+cd Round1
+
+# Copy each file (PowerShell)
+Copy-Item -Path ..\fixed_project\Dockerfile -Destination .
+Copy-Item -Path ..\fixed_project\README.md -Destination .
+Copy-Item -Path ..\fixed_project\models.py -Destination .
+Copy-Item -Path ..\fixed_project\__init__.py -Destination .
+Copy-Item -Path ..\fixed_project\client.py -Destination .
+Copy-Item -Path ..\fixed_project\openenv.yaml -Destination .
+Copy-Item -Path ..\fixed_project\pyproject.toml -Destination .
+Copy-Item -Path ..\fixed_project\inference.py -Destination .
+Copy-Item -Path ..\fixed_project\.dockerignore -Destination .
+Copy-Item -Path ..\fixed_project\server -Destination . -Recurse
+
+# 2e. Push to HF
+git add -A
+git commit -m "Deploy: Data Pipeline Debugging Environment"
+git push
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  STEP 3: WAIT 3-5 MINUTES
+#  Go to https://huggingface.co/spaces/jdwnx234/Round1
+#  Watch the "Building" status turn to "Running"
+#  Check the Logs tab if there are errors
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Test if it works (run in PowerShell):
+curl -X POST -H "Content-Type: application/json" -d "{}" https://jdwnx234-round1.hf.space/reset
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  STEP 4: SUBMIT THESE URLs
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#
+#  GitHub Repository URL:
+#    https://github.com/suraj7880314386/Assigmnent
+#
+#  Hugging Face Space URL:
+#    https://huggingface.co/spaces/jdwnx234/Round1
+#
